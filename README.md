@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://prshnthrddy.com/">
+  <a href="https://www.raceapp.prshnthrddy.com/">
     <img alt="race" src="public/horse-orange.svg" width="60" />
   </a>
 </p>
@@ -8,6 +8,7 @@
 </p>
 
 Tech Stack used:
+
 - React, Hooks & Context API
 - React Router
 - Firebase Authentication
