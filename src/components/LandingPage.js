@@ -200,9 +200,6 @@ class LandingPage extends React.Component {
               show.availableClasses &&
               show.availableClasses.length ? (
                 show.classes
-                  .filter((listedClass) =>
-                    show.availableClasses.includes(listedClass.name)
-                  )
                   .map((eachClass, classIndex) => (
                     <Paper
                       className={this.props.classes.paper}
@@ -223,6 +220,7 @@ class LandingPage extends React.Component {
                             size='small'
                             color='primary'
                             className={this.props.classes.button}
+                            disabled={!show.availableClasses.includes(eachClass.name)}
                             onClick={() =>
                               this.setState({
                                 ...this.state,
