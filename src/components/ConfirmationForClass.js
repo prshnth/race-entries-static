@@ -61,7 +61,7 @@ export default function ConfirmationForClass(props) {
     props.handleConfirmationDialogClose();
   };
 
-  const getParticipantsForClass = () => {
+  const getParticipantsForClass = (shouldSort = false) => {
     return _.chain(props.participants)
       .filter(
         (participant) =>
@@ -70,7 +70,7 @@ export default function ConfirmationForClass(props) {
       )
       .sortBy(
         (participant) =>
-          !props.isAdmin &&
+          (!props.isAdmin || shouldSort) &&
           props.selectedShow.draw[props.selectedClass.id] &&
           props.selectedShow.draw[props.selectedClass.id][participant.id]
       )
@@ -78,10 +78,11 @@ export default function ConfirmationForClass(props) {
   };
 
   const makeParticipantsPDF = () => {
-    const participantsList = getParticipantsForClass();
+    const participantsList = getParticipantsForClass(true);
     participantsDoc.autoTable({
-      head: [['Rider Name', 'Horse Name', 'Owner Name']],
-      body: participantsList.map((participant) => [
+      head: [['Order', 'Rider Name', 'Horse Name', 'Owner Name']],
+      body: participantsList.map((participant, index) => [
+        index + 1,
         participant.riderName,
         participant.horseName,
         participant.ownerName,
