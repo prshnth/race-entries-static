@@ -17,6 +17,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 import SortIcon from '@material-ui/icons/Sort';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import jsPDF from 'jspdf';
@@ -36,9 +38,10 @@ export default function ConfirmationForClass(props) {
     },
     inputOrder: {
       width: '20px',
-      '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-        '-webkit-appearance': 'none',
-      },
+      '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':
+        {
+          '-webkit-appearance': 'none',
+        },
     },
     wrapper: {
       position: 'relative',
@@ -51,6 +54,9 @@ export default function ConfirmationForClass(props) {
       left: '50%',
       marginTop: -12,
       marginLeft: -12,
+    },
+    editButtons: {
+      display: 'flex',
     },
   }));
 
@@ -185,6 +191,7 @@ export default function ConfirmationForClass(props) {
                   <TableCell>Rider Name</TableCell>
                   <TableCell>Horse Name</TableCell>
                   <TableCell>Owner Name</TableCell>
+                  {props.isAdmin && <TableCell align='center'>Edit</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -217,11 +224,72 @@ export default function ConfirmationForClass(props) {
                         }
                       </TableCell>
                     ) : null}
-                    <TableCell component='th' scope='row'>
-                      {participant.riderName}
-                    </TableCell>
-                    <TableCell>{participant.horseName}</TableCell>
-                    <TableCell>{participant.ownerName}</TableCell>
+                    {props.isAdmin ? (
+                      <React.Fragment>
+                        <TableCell component='th' scope='row'>
+                          <TextField
+                            type='text'
+                            value={participant.riderName}
+                            onChange={(e) =>
+                              props.onUpdateParticipantState({
+                                ...participant,
+                                riderName: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell component='th' scope='row'>
+                          <TextField
+                            type='text'
+                            value={participant.horseName}
+                            onChange={(e) =>
+                              props.onUpdateParticipantState({
+                                ...participant,
+                                horseName: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell component='th' scope='row'>
+                          <TextField
+                            type='text'
+                            value={participant.ownerName}
+                            onChange={(e) =>
+                              props.onUpdateParticipantState({
+                                ...participant,
+                                ownerName: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell className={classes.editButtons}>
+                          <IconButton
+                            aria-label='save-class'
+                            color='primary'
+                            onClick={() => props.onEditParticipant(participant)}
+                          >
+                            <SaveIcon />
+                          </IconButton>
+                          <IconButton
+                            aria-label='delete-class'
+                            color='secondary'
+                            onClick={() =>
+                              props.onDeleteParticipant(participant)
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <TableCell component='th' scope='row'>
+                          {participant.riderName}
+                        </TableCell>
+                        <TableCell>{participant.horseName}</TableCell>
+                        <TableCell>{participant.ownerName}</TableCell>
+                      </React.Fragment>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
