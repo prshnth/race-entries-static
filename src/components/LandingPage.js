@@ -192,76 +192,77 @@ class LandingPage extends React.Component {
               className={this.props.classes.boxContainer}
             >
               <Typography noWrap variant='h6' display='inline' color='primary'>
-                {moment(show.showDate, 'YYYY-MM-DD').format(
-                  'dddd, MMMM Do YYYY'
-                )}
+                {show.showName +
+                  ' - ' +
+                  moment(show.showDate, 'YYYY-MM-DD').format(
+                    'dddd, MMMM Do YYYY'
+                  )}
               </Typography>
-              {show.classes &&
-              show.availableClasses &&
-              show.availableClasses.length ? (
-                show.classes
-                  .map((eachClass, classIndex) => (
-                    <Paper
-                      className={this.props.classes.paper}
-                      elevation={6}
-                      key={classIndex}
-                    >
-                      <Grid container wrap='nowrap' spacing={2}>
-                        <Grid item>
-                          <Typography
-                            variant='subtitle2'
-                            color='textSecondary'
-                            noWrap
-                          >
-                            {eachClass.name}
-                          </Typography>
-                          <Button
-                            variant='outlined'
-                            size='small'
-                            color='primary'
-                            className={this.props.classes.button}
-                            disabled={!show.availableClasses.includes(eachClass.name)}
-                            onClick={() =>
-                              this.setState({
-                                ...this.state,
-                                registerDialogOpen: true,
-                                selectedShow: show,
-                                selectedClass: eachClass,
-                              })
-                            }
-                            startIcon={<Register />}
-                          >
-                            Enter
-                          </Button>
-                          <Button
-                            variant='outlined'
-                            size='small'
-                            color='primary'
-                            className={this.props.classes.button}
-                            onClick={() =>
-                              this.setState({
-                                ...this.state,
-                                confirmationDialogOpen: true,
-                                selectedShow: show,
-                                selectedClass: eachClass,
-                              })
-                            }
-                            startIcon={
-                              _.isEmpty(show.draw[eachClass.id]) ? (
-                                <HowToReg />
-                              ) : (
-                                <Assignment />
-                              )
-                            }
-                          >
-                            {_.isEmpty(show.draw[eachClass.id])
-                              ? 'Confirmed'
-                              : 'Draw'}
-                          </Button>
-                        </Grid>
+              {show.classes ? (
+                show.classes.map((eachClass, classIndex) => (
+                  <Paper
+                    className={this.props.classes.paper}
+                    elevation={6}
+                    key={classIndex}
+                  >
+                    <Grid container wrap='nowrap' spacing={2}>
+                      <Grid item>
+                        <Typography
+                          variant='subtitle2'
+                          color='textSecondary'
+                          noWrap
+                        >
+                          {eachClass.name}
+                        </Typography>
+                        <Button
+                          variant='outlined'
+                          size='small'
+                          color='primary'
+                          className={this.props.classes.button}
+                          disabled={
+                            !show.availableClasses.includes(eachClass.name)
+                          }
+                          onClick={() =>
+                            this.setState({
+                              ...this.state,
+                              registerDialogOpen: true,
+                              selectedShow: show,
+                              selectedClass: eachClass,
+                            })
+                          }
+                          startIcon={<Register />}
+                        >
+                          Enter
+                        </Button>
+                        <Button
+                          variant='outlined'
+                          size='small'
+                          color='primary'
+                          className={this.props.classes.button}
+                          onClick={() =>
+                            this.setState({
+                              ...this.state,
+                              confirmationDialogOpen: true,
+                              selectedShow: show,
+                              selectedClass: eachClass,
+                            })
+                          }
+                          startIcon={
+                            _.isEmpty(show.draw[eachClass.id]) ? (
+                              <HowToReg />
+                            ) : (
+                              <Assignment />
+                            )
+                          }
+                        >
+                          {_.isEmpty(show.draw[eachClass.id])
+                            ? 'Confirmed'
+                            : 'Draw'}
+                        </Button>
                       </Grid>
-                    </Paper>
-                  ))
+                    </Grid>
+                  </Paper>
+                ))
               ) : (
                 <Typography noWrap variant='subtitle1' color='textSecondary'>
                   There are no classes available for this Show.

@@ -6,6 +6,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import moment from 'moment';
 import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Table from '@material-ui/core/Table';
@@ -134,9 +135,11 @@ export default function ConfirmationForClass(props) {
         <div className={classes.titleContainer}>
           {props.selectedShow && (
             <Typography variant='h6' display='inline' noWrap>
-              {moment(props.selectedShow.showDate, 'YYYY-MM-DD').format(
-                'dddd, MMMM Do'
-              )}
+              {props.selectedShow.showName +
+                ' - ' +
+                moment(props.selectedShow.showDate, 'YYYY-MM-DD').format(
+                  'dddd, MMMM Do'
+                )}
             </Typography>
           )}
           {props.isAdmin && (
@@ -191,6 +194,9 @@ export default function ConfirmationForClass(props) {
                   <TableCell>Rider Name</TableCell>
                   <TableCell>Horse Name</TableCell>
                   <TableCell>Owner Name</TableCell>
+                  {props.selectedClass.hasSeniorWorldTour && (
+                    <TableCell>SWT</TableCell>
+                  )}
                   {props.isAdmin && <TableCell align='center'>Edit</TableCell>}
                 </TableRow>
               </TableHead>
@@ -262,6 +268,21 @@ export default function ConfirmationForClass(props) {
                             }
                           />
                         </TableCell>
+                        {props.selectedClass.hasSeniorWorldTour && (
+                          <TableCell>
+                            <Checkbox
+                              checked={participant.selectedSeniorWorldTour}
+                              onChange={(e) =>
+                                props.onUpdateParticipantState({
+                                  ...participant,
+                                  selectedSeniorWorldTour: e.target.checked,
+                                })
+                              }
+                              color='primary'
+                              name='selectedSeniorWorldTour'
+                            />
+                          </TableCell>
+                        )}
                         <TableCell className={classes.editButtons}>
                           <IconButton
                             aria-label='save-class'
@@ -288,6 +309,9 @@ export default function ConfirmationForClass(props) {
                         </TableCell>
                         <TableCell>{participant.horseName}</TableCell>
                         <TableCell>{participant.ownerName}</TableCell>
+                        <TableCell>
+                          {participant.selectedSeniorWorldTour ? 'Yes' : 'No'}
+                        </TableCell>
                       </React.Fragment>
                     )}
                   </TableRow>

@@ -91,7 +91,7 @@ const ShowList = ({
       className={classes.boxContainer}
     >
       <Typography noWrap variant='h6' display='inline' color='primary'>
-        {moment(show.showDate, 'YYYY-MM-DD').format('dddd, MMMM Do YYYY')}
+        {show.showName + ' - ' + moment(show.showDate, 'YYYY-MM-DD').format('dddd, MMMM Do YYYY')}
       </Typography>
       {show.classes
         ? show.classes.map((eachClass, classIndex) => (
