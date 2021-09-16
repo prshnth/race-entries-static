@@ -321,9 +321,8 @@ class AdminPage extends React.Component {
     });
     showRef
       .update({
-        [`draw.${this.state.selectedClass.id}`]: selectedShow.draw[
-          this.state.selectedClass.id
-        ],
+        [`draw.${this.state.selectedClass.id}`]:
+          selectedShow.draw[this.state.selectedClass.id],
       })
       .then(() => {
         this.setState({
@@ -335,6 +334,56 @@ class AdminPage extends React.Component {
       .finally(() => {
         this.setState({ isSortLoading: false });
       });
+  }
+
+  editParticipant(editedParticipant) {
+    this.props.firebase.db
+      .collection('participants')
+      .doc(editedParticipant.id)
+      .update({
+        ...editedParticipant,
+      })
+      .then(() => {
+        this.setState({
+          ...this.state,
+          showSuccessAlertOpen: true,
+          successToastMessage: 'Update Successful!',
+        });
+      });
+  }
+
+  deleteParticipant(editedParticipant) {
+    this.props.firebase.db
+      .collection('participants')
+      .doc(editedParticipant.id)
+      .delete()
+      .then(() => {
+        this.props.firebase.db
+          .collection('shows')
+          .doc(editedParticipant.participationShowId)
+          .update({
+            [`draw.${this.state.selectedClass.id}.${editedParticipant.id}`]:
+              this.props.firebase.fieldValue.delete(),
+          });
+        this.setState({
+          ...this.state,
+          showSuccessAlertOpen: true,
+          successToastMessage: 'Participant Removed!',
+        });
+      });
+  }
+
+  updateParticipantState(updatedParticipant) {
+    const allParticipants = _.map(this.state.participants, (participant) => {
+      if (participant.id === updatedParticipant.id) {
+        return updatedParticipant;
+      }
+      return participant;
+    });
+    this.setState({
+      ...this.state,
+      participants: allParticipants,
+    });
   }
 
   onSubmitRegistration(participantInfo) {
@@ -413,6 +462,15 @@ class AdminPage extends React.Component {
           isAdmin={true}
           isSortLoading={this.state.isSortLoading}
           setOrder={(order, id) => this.setDrawOrder(order, id)}
+          onEditParticipant={(editedParticipant) =>
+            this.editParticipant(editedParticipant)
+          }
+          onUpdateParticipantState={(updatedParticipant) =>
+            this.updateParticipantState(updatedParticipant)
+          }
+          onDeleteParticipant={(updatedParticipant) =>
+            this.deleteParticipant(updatedParticipant)
+          }
           onSortClick={() => this.sortList()}
         />
         <Snackbar
