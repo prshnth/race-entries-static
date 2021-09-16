@@ -309,9 +309,11 @@ export default function ConfirmationForClass(props) {
                         </TableCell>
                         <TableCell>{participant.horseName}</TableCell>
                         <TableCell>{participant.ownerName}</TableCell>
-                        <TableCell>
-                          {participant.selectedSeniorWorldTour ? 'Yes' : 'No'}
-                        </TableCell>
+                        {props.selectedClass.hasSeniorWorldTour && (
+                          <TableCell>
+                            {participant.selectedSeniorWorldTour ? 'Yes' : 'No'}
+                          </TableCell>
+                        )}
                       </React.Fragment>
                     )}
                   </TableRow>
